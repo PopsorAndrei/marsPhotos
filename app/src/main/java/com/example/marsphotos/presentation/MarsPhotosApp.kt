@@ -16,7 +16,7 @@
 
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.marsphotos.ui
+package com.example.marsphotos.presentation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -31,14 +31,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.marsphotos.R
-import com.example.marsphotos.ui.screens.HomeScreen
-import com.example.marsphotos.ui.screens.MarsViewModel
+import com.example.marsphotos.data.MarsPhotosRetrofitService
+import com.example.marsphotos.domain.GetPhotosImpl
 
 @Composable
 fun MarsPhotosApp() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    val viewModel = MarsViewModel(GetPhotosImpl(MarsPhotosRetrofitService))
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { MarsTopAppBar(scrollBehavior = scrollBehavior) }
@@ -46,10 +48,9 @@ fun MarsPhotosApp() {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            val marsViewModel: MarsViewModel = viewModel()
             HomeScreen(
-                marsUiState = marsViewModel.marsUiState,
-                contentPadding = it,
+                marsUiState = viewModel.marsUiState,
+                contentPadding = it
             )
         }
     }

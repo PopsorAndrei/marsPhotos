@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.marsphotos.ui.screens
+package com.example.marsphotos.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -45,10 +45,10 @@ fun HomeScreen(
     when (marsUiState) {
         is MarsUiState.Success -> ResultScreen(
             photos = marsUiState.photos,
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         )
-        is MarsUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxWidth())
-        is MarsUiState.Error -> ErrorScreen(modifier = Modifier.fillMaxSize())
+        is MarsUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxWidth())
+        is MarsUiState.Error -> ErrorScreen(modifier = modifier.fillMaxSize())
     }
 }
 
@@ -87,7 +87,6 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
         Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

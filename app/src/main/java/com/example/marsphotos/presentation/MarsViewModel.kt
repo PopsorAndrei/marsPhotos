@@ -13,26 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.marsphotos.ui.screens
+package com.example.marsphotos.presentation
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.marsphotos.network.MarsApi
+import com.example.marsphotos.domain.GetPhotos
 import kotlinx.coroutines.launch
-import java.io.IOException
-
 
 sealed interface MarsUiState {
-    data class Success(val photos: String):MarsUiState
-    object Error: MarsUiState
+    data class Success(val photos: String) : MarsUiState
+    object Error : MarsUiState
     object Loading : MarsUiState
 }
 
-class MarsViewModel : ViewModel() {
+class MarsViewModel(
+    private val getPhotos: GetPhotos
+) : ViewModel() {
     /** The mutable State that stores the status of the most recent request */
     var marsUiState: MarsUiState by mutableStateOf(MarsUiState.Loading)
         private set
@@ -41,14 +40,14 @@ class MarsViewModel : ViewModel() {
         getMarsPhotos()
     }
 
-
-    fun getMarsPhotos() {
+    private fun getMarsPhotos() {
         viewModelScope.launch {
 
             marsUiState = try {
-                val listResult = MarsApi.retrofitService.getPhotos()
+                val listResult = getPhotos.getPhotos()
+
                 MarsUiState.Success("Success, the item has ${listResult.size}")
-            } catch (e: IllegalAccessException){
+            } catch (e: IllegalAccessException) {
                 MarsUiState.Error
             }
         }
