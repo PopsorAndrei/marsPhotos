@@ -20,10 +20,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -42,7 +40,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.marsphotos.R
@@ -50,33 +47,10 @@ import com.example.marsphotos.domain.MarsPhoto
 import com.example.marsphotos.ui.theme.MarsPhotosTheme
 
 @Composable
-fun HomeScreen(
-    marsUiState: MarsUiState,
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
-    navController: NavController
-) {
-    // ResultScreen(marsUiState, modifier.padding(top = contentPadding.calculateTopPadding()))
-    when (marsUiState) {
-        is MarsUiState.Success -> ResultScreen(
-            photos = marsUiState.photos,
-            modifier = modifier.fillMaxWidth(),
-            navController = navController
-        )
-
-        is MarsUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxWidth())
-        is MarsUiState.Error -> ErrorScreen(modifier = modifier.fillMaxSize())
-    }
-}
-
-/**
- * ResultScreen displaying number of photos retrieved.
- */
-@Composable
 fun ResultScreen(
     photos: List<MarsPhoto>,
-    modifier: Modifier = Modifier,
-    navController: NavController
+    navigateToRealEstate: (id: String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -85,7 +59,11 @@ fun ResultScreen(
         Column {
             Text(text = "BASIC TEXT DISPLAY IN RESULT SCREEN")
 
-            PhotoGridScreen(photos = photos, modifier = Modifier, navController = navController)
+            PhotoGridScreen(
+                photos = photos,
+                modifier = Modifier,
+                navigateToRealEstate = navigateToRealEstate
+            )
         }
     }
 }
@@ -112,10 +90,14 @@ fun MarsPhotoCard(photo: MarsPhoto, modifier: Modifier) {
 }
 
 @Composable
-fun PhotoGridScreen(photos: List<MarsPhoto>, modifier: Modifier, navController: NavController) {
+fun PhotoGridScreen(
+    photos: List<MarsPhoto>,
+    navigateToRealEstate: (id: String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
-        modifier = Modifier.padding(horizontal = 4.dp)
+        modifier = modifier.padding(horizontal = 4.dp)
     ) {
         items(photos) { photo ->
             MarsPhotoCard(photo = photo,
@@ -123,9 +105,7 @@ fun PhotoGridScreen(photos: List<MarsPhoto>, modifier: Modifier, navController: 
                     .padding(4.dp)
                     .fillMaxWidth()
                     .aspectRatio(1.5f)
-                    .clickable {
-                        navController.navigate(route = Screens.RealEstateScreen.route +"/"+photo.id)
-                    }
+                    .clickable { navigateToRealEstate(photo.id) }
             )
         }
     }
@@ -153,7 +133,6 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
         Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
     }
 }
-
 
 @Composable
 fun photoCard(photo: MarsPhoto, modifier: Modifier) {

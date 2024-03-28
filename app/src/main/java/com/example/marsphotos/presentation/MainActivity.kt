@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-package com.example.marsphotos
+package com.example.marsphotos.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.example.marsphotos.data.RealEstateRetrofitService
-import com.example.marsphotos.domain.GetRealEstatePhotosImplementantion
-import com.example.marsphotos.presentation.MarsPhotosApp
-import com.example.marsphotos.presentation.Navigation
-import com.example.marsphotos.presentation.RealEstateDisplay
-import com.example.marsphotos.presentation.RealEstateViewModel
 import com.example.marsphotos.ui.theme.MarsPhotosTheme
 
 class MainActivity : ComponentActivity() {
@@ -39,26 +30,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        val realEstateViewModel = RealEstateViewModel("IDD",
-            GetRealEstatePhotosImplementantion(
-                RealEstateRetrofitService
-            )
-        )
-        Log.i("andrei", realEstateViewModel.toString())
-
         setContent {
             MarsPhotosTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    //MarsPhotosApp()
-                    //Log.d("andrei", "MainActivity")
-                    val state = remember { realEstateViewModel.selectedRealEstate }
-//
-//                    RealEstateDisplay(
-//                        state = state.value,
-//                        realEstateId = "424905"
-//                    )
                     Navigation()
                 }
             }

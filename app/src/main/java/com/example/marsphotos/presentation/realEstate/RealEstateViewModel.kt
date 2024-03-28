@@ -1,10 +1,8 @@
-package com.example.marsphotos.presentation
+package com.example.marsphotos.presentation.realEstate
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.marsphotos.data.RealEstateEntity

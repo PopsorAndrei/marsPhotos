@@ -1,6 +1,5 @@
-package com.example.marsphotos.presentation
+package com.example.marsphotos.presentation.realEstate
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,9 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.marsphotos.data.RealEstateEntity
-import com.example.marsphotos.data.RealEstateRetrofitService
-import com.example.marsphotos.domain.GetPhotosImpl
-import com.example.marsphotos.domain.GetRealEstatePhotosImplementantion
 
 @Composable
 fun RealEstateDisplay(

@@ -13,31 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.marsphotos.presentation
+package com.example.marsphotos.presentation.main
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.marsphotos.domain.GetPhotos
 import com.example.marsphotos.domain.MarsPhoto
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-sealed interface MarsUiState {
-    data class Success(val photos: List<MarsPhoto>) : MarsUiState
-    object Error : MarsUiState
-    object Loading : MarsUiState
-}
 
 class MarsViewModel(
     private val getPhotos: GetPhotos
 ) : ViewModel() {
-    /** The mutable State that stores the status of the most recent request */
-    var marsUiState: MarsUiState by mutableStateOf(MarsUiState.Loading)
-        private set
-
-//    var realEstateItems : List
+    private val _marsUiState: MutableStateFlow<MarsUiState> = MutableStateFlow(MarsUiState())
+    val marsUiState: StateFlow<MarsUiState> = _marsUiState.asStateFlow()
 
     init {
         getMarsPhotos()
@@ -45,14 +37,27 @@ class MarsViewModel(
 
     private fun getMarsPhotos() {
         viewModelScope.launch {
+            val photos = getPhotos.getPhotos()
 
-            marsUiState = try {
-                val listResult = getPhotos.getPhotos()
-                MarsUiState.Success(listResult)
+            try {
+                _marsUiState.value = _marsUiState.value.copy(
+                    photos = photos,
+                    isLoading = false
+                )
             } catch (e: IllegalAccessException) {
-                MarsUiState.Error
+                _marsUiState.value = _marsUiState.value.copy(
+                    hasError = true,
+                    isLoading = false
+                )
             }
+
+            Log.i("ciprian22", "state: ${marsUiState.value}")
         }
     }
-
 }
+
+data class MarsUiState(
+    val photos: List<MarsPhoto> = emptyList(),
+    val isLoading: Boolean = true,
+    val hasError: Boolean = false
+)
