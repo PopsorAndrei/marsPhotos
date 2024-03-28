@@ -1,9 +1,9 @@
 package com.example.marsphotos.data
 
 data class RealEstateEntity(
-    val id:String,
-    val price: Int,
-    val img_src :String
+    val id:String ="default Id",
+    val price: Int = 1,
+    val img_src :String = "default String"
 )
 
 

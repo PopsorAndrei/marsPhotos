@@ -6,11 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.marsphotos.data.RealEstateRetrofitService
-import com.example.marsphotos.domain.GetRealEstatePhotosImplementantion
 import com.example.marsphotos.presentation.main.MainScreen
 import com.example.marsphotos.presentation.realEstate.RealEstateDisplay
-import com.example.marsphotos.presentation.realEstate.RealEstateViewModel
 
 @Composable
 fun Navigation() {
@@ -34,15 +31,8 @@ fun Navigation() {
                 }
             ))
         { entry ->
-            val realEstateViewModel = RealEstateViewModel(
-                entry.arguments?.getString("RealEstateId")!!,
-                GetRealEstatePhotosImplementantion(
-                    RealEstateRetrofitService
-                )
-            )
 
             RealEstateDisplay(
-                realEstateViewModel.selectedRealEstate.value,
                 realEstateId = entry.arguments?.getString("RealEstateId")
             )
         }
