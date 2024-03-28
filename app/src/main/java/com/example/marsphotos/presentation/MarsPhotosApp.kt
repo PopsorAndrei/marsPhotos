@@ -31,12 +31,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import com.example.marsphotos.R
 import com.example.marsphotos.data.MarsPhotosRetrofitService
 import com.example.marsphotos.domain.GetPhotosImpl
 
 @Composable
-fun MarsPhotosApp() {
+fun MarsPhotosApp(navController: NavController) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     val viewModel = MarsViewModel(GetPhotosImpl(MarsPhotosRetrofitService))
@@ -50,7 +51,8 @@ fun MarsPhotosApp() {
         ) {
             HomeScreen(
                 marsUiState = viewModel.marsUiState,
-                contentPadding = it
+                contentPadding = it,
+                navController = navController
             )
         }
     }

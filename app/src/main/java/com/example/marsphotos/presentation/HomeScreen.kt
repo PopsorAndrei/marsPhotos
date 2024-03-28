@@ -16,23 +16,37 @@
 package com.example.marsphotos.presentation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.marsphotos.R
+import com.example.marsphotos.domain.MarsPhoto
 import com.example.marsphotos.ui.theme.MarsPhotosTheme
 
 @Composable
@@ -40,13 +54,16 @@ fun HomeScreen(
     marsUiState: MarsUiState,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
+    navController: NavController
 ) {
     // ResultScreen(marsUiState, modifier.padding(top = contentPadding.calculateTopPadding()))
     when (marsUiState) {
         is MarsUiState.Success -> ResultScreen(
             photos = marsUiState.photos,
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth(),
+            navController = navController
         )
+
         is MarsUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxWidth())
         is MarsUiState.Error -> ErrorScreen(modifier = modifier.fillMaxSize())
     }
@@ -56,12 +73,61 @@ fun HomeScreen(
  * ResultScreen displaying number of photos retrieved.
  */
 @Composable
-fun ResultScreen(photos: String, modifier: Modifier = Modifier) {
+fun ResultScreen(
+    photos: List<MarsPhoto>,
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
     ) {
-        Text(text = photos)
+        Column {
+            Text(text = "BASIC TEXT DISPLAY IN RESULT SCREEN")
+
+            PhotoGridScreen(photos = photos, modifier = Modifier, navController = navController)
+        }
+    }
+}
+
+@Composable
+fun MarsPhotoCard(photo: MarsPhoto, modifier: Modifier) {
+    Card(
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+    ) {
+        AsyncImage(
+            model = ImageRequest.Builder(context = LocalContext.current)
+                .data(photo.imageUrl)
+                .crossfade(true)
+                .build(),
+            contentDescription = "content description ",
+            error = painterResource(id = R.drawable.ic_broken_image),
+            placeholder = painterResource(id = R.drawable.loading_img),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+
+}
+
+@Composable
+fun PhotoGridScreen(photos: List<MarsPhoto>, modifier: Modifier, navController: NavController) {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(150.dp),
+        modifier = Modifier.padding(horizontal = 4.dp)
+    ) {
+        items(photos) { photo ->
+            MarsPhotoCard(photo = photo,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth()
+                    .aspectRatio(1.5f)
+                    .clickable {
+                        navController.navigate(route = Screens.RealEstateScreen.route +"/"+photo.id)
+                    }
+            )
+        }
     }
 }
 
@@ -88,10 +154,26 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
     }
 }
 
+
+@Composable
+fun photoCard(photo: MarsPhoto, modifier: Modifier) {
+    AsyncImage(
+        model = ImageRequest.Builder(context = LocalContext.current)
+            .data(photo.imageUrl).build(), contentDescription = "marsPhoto description"
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun ResultScreenPreview() {
     MarsPhotosTheme {
-        ResultScreen(stringResource(R.string.placeholder_result))
+        Row {
+            photoCard(
+                photo = MarsPhoto(
+                    id = "12321",
+                    imageUrl = "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631290305226E03_DXXX.jpg"
+                ), modifier = Modifier
+            )
+        }
     }
 }

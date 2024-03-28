@@ -87,11 +87,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // Retrofit with scalar Converter
-
-
-
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation ("androidx.navigation:navigation-compose:2.7.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
 
     // Retrofit
     // Retrofit with Scalar Converter

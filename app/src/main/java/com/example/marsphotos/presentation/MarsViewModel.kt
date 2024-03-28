@@ -21,10 +21,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.marsphotos.domain.GetPhotos
+import com.example.marsphotos.domain.MarsPhoto
 import kotlinx.coroutines.launch
 
 sealed interface MarsUiState {
-    data class Success(val photos: String) : MarsUiState
+    data class Success(val photos: List<MarsPhoto>) : MarsUiState
     object Error : MarsUiState
     object Loading : MarsUiState
 }
@@ -36,6 +37,8 @@ class MarsViewModel(
     var marsUiState: MarsUiState by mutableStateOf(MarsUiState.Loading)
         private set
 
+//    var realEstateItems : List
+
     init {
         getMarsPhotos()
     }
@@ -45,11 +48,11 @@ class MarsViewModel(
 
             marsUiState = try {
                 val listResult = getPhotos.getPhotos()
-
-                MarsUiState.Success("Success, the item has ${listResult.size}")
+                MarsUiState.Success(listResult)
             } catch (e: IllegalAccessException) {
                 MarsUiState.Error
             }
         }
     }
+
 }
