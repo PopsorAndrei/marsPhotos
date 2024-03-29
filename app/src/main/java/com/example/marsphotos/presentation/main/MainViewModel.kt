@@ -15,7 +15,6 @@
  */
 package com.example.marsphotos.presentation.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.marsphotos.domain.GetPhotos
@@ -51,7 +50,6 @@ class MarsViewModel(
                 )
             }
 
-            Log.i("ciprian22", "state: ${marsUiState.value}")
         }
     }
 }

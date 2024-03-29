@@ -1,6 +1,5 @@
 package com.example.marsphotos.domain
 
-import com.example.marsphotos.data.MarsPhotosDataSource
 import com.example.marsphotos.data.RealEstateDataSource
 import com.example.marsphotos.data.RealEstateEntity
 

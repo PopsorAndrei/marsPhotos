@@ -17,16 +17,15 @@
 package com.example.marsphotos.presentation.main
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.marsphotos.data.MarsPhotosRetrofitService
-import com.example.marsphotos.domain.GetPhotosImpl
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreen(
-    navigateToRealEstate: (id: String) -> Unit
+    navigateToRealEstate: (id: String) -> Unit,
 ) {
-    val viewModel = remember { MarsViewModel(GetPhotosImpl(MarsPhotosRetrofitService)) }
+
+    val viewModel = koinViewModel<MarsViewModel>()
     val state = viewModel.marsUiState.collectAsStateWithLifecycle().value
 
     MainScreenContent(state = state, navigateToRealEstate = navigateToRealEstate)

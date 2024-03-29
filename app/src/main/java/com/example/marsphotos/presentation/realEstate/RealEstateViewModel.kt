@@ -13,6 +13,7 @@ class RealEstateViewModel(
     photoId: String,
     private val getPhotosService: GetRealEstatePhotos
 ) : ViewModel() {
+
     private val _realEstateUIState: MutableStateFlow<RealEstateEntity> = MutableStateFlow(
         RealEstateEntity("basic id", 1, "image_url")
     )

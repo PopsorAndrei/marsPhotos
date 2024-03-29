@@ -11,24 +11,19 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.marsphotos.data.RealEstateRetrofitService
-import com.example.marsphotos.domain.GetRealEstatePhotosImplementantion
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun RealEstateDisplay(
     realEstateId: String?,
 ) {
-    val viewModelRealEstate = remember {  RealEstateViewModel(
-        realEstateId!!,
-        GetRealEstatePhotosImplementantion(
-            RealEstateRetrofitService
-        )
-    )}
+
+    val viewModelRealEstate = koinViewModel<RealEstateViewModel> { parametersOf(realEstateId) }
 
     val stateRealEstate = viewModelRealEstate.state.collectAsStateWithLifecycle().value
 
@@ -39,7 +34,7 @@ fun RealEstateDisplay(
             .background(Color.Gray)
             .padding(start = 25.dp, top = 50.dp, end = 25.dp, bottom = 50.dp)
     ) {
-        if (stateRealEstate.price !=1){
+        if (stateRealEstate.price != 1) {
             Row {
                 Text(text = stateRealEstate.id)
                 Spacer(modifier = Modifier.height(10.dp))
@@ -48,7 +43,7 @@ fun RealEstateDisplay(
             Row {
                 Text(text = stateRealEstate.price.toString())
                 Spacer(modifier = Modifier.height(10.dp))
-                Divider(thickness =2.dp)
+                Divider(thickness = 2.dp)
             }
             Row {
                 Text(text = stateRealEstate.img_src)
@@ -61,7 +56,7 @@ fun RealEstateDisplay(
                 Text(text = "The data is loading", modifier = Modifier.padding(top = 50.dp))
             }
         }
-       
+
 
     }
 }
