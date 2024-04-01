@@ -49,7 +49,6 @@ fun RealEstateDisplay(
                 Text(text = stateRealEstate.img_src)
                 Spacer(modifier = Modifier.height(10.dp))
                 Divider(thickness = 1.dp)
-
             }
         } else {
             Row {

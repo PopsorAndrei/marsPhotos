@@ -17,7 +17,6 @@
 package com.example.marsphotos.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -39,7 +38,6 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Log.d("Andrei", "testVM1")
 
                     startKoin {
                         modules(appModule)
