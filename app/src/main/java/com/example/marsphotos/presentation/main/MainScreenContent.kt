@@ -21,8 +21,8 @@ import com.example.marsphotos.ui.theme.MarsPhotosTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreenContent(
-    state: MarsUiState,
-    navigateToRealEstate: (id: String) -> Unit
+    state: MainContract.MainUiState,
+    setAction: (MainContract.MainAction) -> Unit
 
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -43,7 +43,7 @@ fun MainScreenContent(
                 else -> {
                     ResultScreen(
                         photos = state.photos,
-                        navigateToRealEstate = navigateToRealEstate,
+                        setAction = setAction,
                         modifier = mainModifier.fillMaxWidth()
                     )
                 }
@@ -57,8 +57,10 @@ fun MainScreenContent(
 private fun MainScreenContentPreview() {
     MarsPhotosTheme {
         MainScreenContent(
-            state = MarsUiState(photos = listOf(MarsPhoto(id = "123", imageUrl = "url"))),
-            navigateToRealEstate = {}
+            state = MainContract.MainUiState(
+                photos = listOf(MarsPhoto(id = "123", imageUrl = "url"))
+            ),
+            setAction = {}
         )
     }
 }

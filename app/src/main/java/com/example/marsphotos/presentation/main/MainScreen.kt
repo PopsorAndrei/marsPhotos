@@ -18,15 +18,36 @@ package com.example.marsphotos.presentation.main
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.example.marsphotos.presentation.Screens
+import com.example.marsphotos.presentation.core.HandleEffects
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreen(
-    navigateToRealEstate: (id: String) -> Unit,
+    navController: NavController
 ) {
 
-    val viewModel = koinViewModel<MarsViewModel>()
-    val state = viewModel.marsUiState.collectAsStateWithLifecycle().value
+    val viewModel = koinViewModel<MainViewModel>()
+    val state = viewModel.uiState.collectAsStateWithLifecycle().value
 
-    MainScreenContent(state = state, navigateToRealEstate = navigateToRealEstate)
+    MainScreenContent(
+        state = state,
+        setAction = viewModel::setAction
+    )
+
+    HandleEffects(effects = viewModel.effect) {
+        handleEffect(it, navController)
+    }
+}
+
+private fun handleEffect(
+    effect: MainContract.MainEffect,
+    navController: NavController,
+) {
+    when (effect) {
+        is MainContract.MainEffect.NavigateToRealEstateScreen -> {
+            navController.navigate(Screens.RealEstateScreen.route + "/${effect.id}")
+        }
+    }
 }

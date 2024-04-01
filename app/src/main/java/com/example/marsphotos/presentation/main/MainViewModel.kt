@@ -15,20 +15,15 @@
  */
 package com.example.marsphotos.presentation.main
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.marsphotos.domain.GetPhotos
 import com.example.marsphotos.domain.MarsPhoto
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.example.marsphotos.presentation.core.BaseViewModel
 import kotlinx.coroutines.launch
 
-class MarsViewModel(
+class MainViewModel(
     private val getPhotos: GetPhotos
-) : ViewModel() {
-    private val _marsUiState: MutableStateFlow<MarsUiState> = MutableStateFlow(MarsUiState())
-    val marsUiState: StateFlow<MarsUiState> = _marsUiState.asStateFlow()
+) : BaseViewModel<MainContract.MainAction, MainContract.MainUiState, MainContract.MainEffect>() {
 
     init {
         getMarsPhotos()
@@ -39,17 +34,21 @@ class MarsViewModel(
             val photos = getPhotos.getPhotos()
 
             try {
-                _marsUiState.value = _marsUiState.value.copy(
-                    photos = photos,
-                    isLoading = false
-                )
+                setState { copy(photos = photos, isLoading = false) }
             } catch (e: IllegalAccessException) {
-                _marsUiState.value = _marsUiState.value.copy(
-                    hasError = true,
-                    isLoading = false
-                )
+                setState { copy(hasError = true, isLoading = false) }
             }
 
+        }
+    }
+
+    override fun setInitialState() = MainContract.MainUiState()
+
+    override fun handleViewAction(action: MainContract.MainAction) {
+        when (action) {
+            is MainContract.MainAction.ItemClicked -> {
+                setEffect { MainContract.MainEffect.NavigateToRealEstateScreen(action.id) }
+            }
         }
     }
 }

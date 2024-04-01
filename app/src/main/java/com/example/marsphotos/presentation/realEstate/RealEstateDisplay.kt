@@ -1,6 +1,5 @@
 package com.example.marsphotos.presentation.realEstate
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +21,6 @@ import org.koin.core.parameter.parametersOf
 fun RealEstateDisplay(
     realEstateId: String?,
 ) {
-
     val viewModelRealEstate = koinViewModel<RealEstateViewModel> { parametersOf(realEstateId) }
 
     val stateRealEstate = viewModelRealEstate.state.collectAsStateWithLifecycle().value
@@ -55,7 +53,6 @@ fun RealEstateDisplay(
                 Text(text = "The data is loading", modifier = Modifier.padding(top = 50.dp))
             }
         }
-
 
     }
 }

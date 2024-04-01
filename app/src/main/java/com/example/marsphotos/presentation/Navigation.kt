@@ -15,11 +15,7 @@ fun Navigation() {
 
     NavHost(navController = navController, startDestination = Screens.MainScreen.route) {
         composable(route = Screens.MainScreen.route) {
-            MainScreen(
-                navigateToRealEstate = {
-                    navController.navigate(route = Screens.RealEstateScreen.route + "/$it")
-                }
-            )
+            MainScreen(navController = navController)
         }
 
         composable(

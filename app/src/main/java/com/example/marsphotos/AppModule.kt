@@ -6,7 +6,7 @@ import com.example.marsphotos.domain.GetPhotos
 import com.example.marsphotos.domain.GetPhotosImpl
 import com.example.marsphotos.domain.GetRealEstatePhotos
 import com.example.marsphotos.domain.GetRealEstatePhotosImplementantion
-import com.example.marsphotos.presentation.main.MarsViewModel
+import com.example.marsphotos.presentation.main.MainViewModel
 import com.example.marsphotos.presentation.realEstate.RealEstateViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -22,7 +22,7 @@ val appModule = module {
 
     single<MarsPhotosDataSource> { com.example.marsphotos.data.retrofit.create(MarsPhotosDataSource::class.java) }
 
-    viewModel { MarsViewModel(get()) }
+    viewModel { MainViewModel(get()) }
 
     viewModel { (id: String) ->
         RealEstateViewModel(id, get())

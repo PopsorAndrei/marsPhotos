@@ -44,12 +44,13 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.marsphotos.R
 import com.example.marsphotos.domain.MarsPhoto
+import com.example.marsphotos.presentation.main.MainContract
 import com.example.marsphotos.ui.theme.MarsPhotosTheme
 
 @Composable
 fun ResultScreen(
     photos: List<MarsPhoto>,
-    navigateToRealEstate: (id: String) -> Unit,
+    setAction: (MainContract.MainAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -61,8 +62,8 @@ fun ResultScreen(
 
             PhotoGridScreen(
                 photos = photos,
-                modifier = Modifier,
-                navigateToRealEstate = navigateToRealEstate
+                setAction = setAction,
+                modifier = Modifier
             )
         }
     }
@@ -92,7 +93,7 @@ fun MarsPhotoCard(photo: MarsPhoto, modifier: Modifier) {
 @Composable
 fun PhotoGridScreen(
     photos: List<MarsPhoto>,
-    navigateToRealEstate: (id: String) -> Unit,
+    setAction: (MainContract.MainAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -105,7 +106,7 @@ fun PhotoGridScreen(
                     .padding(4.dp)
                     .fillMaxWidth()
                     .aspectRatio(1.5f)
-                    .clickable { navigateToRealEstate(photo.id) }
+                    .clickable { setAction(MainContract.MainAction.ItemClicked(photo.id)) }
             )
         }
     }
