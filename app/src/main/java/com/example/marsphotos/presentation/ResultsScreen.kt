@@ -142,18 +142,3 @@ fun photoCard(photo: MarsPhoto, modifier: Modifier) {
             .data(photo.imageUrl).build(), contentDescription = "marsPhoto description"
     )
 }
-
-@Preview(showBackground = true)
-@Composable
-fun ResultScreenPreview() {
-    MarsPhotosTheme {
-        Row {
-            photoCard(
-                photo = MarsPhoto(
-                    id = "12321",
-                    imageUrl = "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631290305226E03_DXXX.jpg"
-                ), modifier = Modifier
-            )
-        }
-    }
-}

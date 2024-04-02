@@ -23,7 +23,6 @@ import com.example.marsphotos.ui.theme.MarsPhotosTheme
 fun MainScreenContent(
     state: MainContract.MainUiState,
     setAction: (MainContract.MainAction) -> Unit
-
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 

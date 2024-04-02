@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.marsphotos.presentation.RealEstatePhotoDescription.MainPhotoDescription
 import com.example.marsphotos.presentation.main.MainScreen
 import com.example.marsphotos.presentation.realEstate.RealEstateDisplay
 
@@ -27,10 +28,23 @@ fun Navigation() {
                 }
             ))
         { entry ->
-
             RealEstateDisplay(
-                realEstateId = entry.arguments?.getString("RealEstateId")
+                realEstateId = entry.arguments?.getString("RealEstateId"),
+                navController = navController
             )
+        }
+
+        composable(
+            route = Screens.PhotoUrlScreen.route + "/{photoUrl}",
+            arguments = listOf(
+                navArgument("photoUrl")
+                {
+                    type = NavType.StringType
+                }
+            ))
+        {entry ->
+
+            MainPhotoDescription(photoUrlString = entry.arguments?.getString("photoUrl"))
         }
     }
 }
@@ -38,4 +52,5 @@ fun Navigation() {
 sealed class Screens(val route: String) {
     object MainScreen : Screens("MainScreen")
     object RealEstateScreen : Screens("RealEstate")
+    object PhotoUrlScreen : Screens("PhotoUrl")
 }

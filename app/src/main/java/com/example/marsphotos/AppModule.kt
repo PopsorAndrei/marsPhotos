@@ -28,4 +28,5 @@ val appModule = module {
         RealEstateViewModel(id, get())
     }
 
+
 }
